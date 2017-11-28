@@ -8,7 +8,7 @@
  * @license    https://github.com/Turiknox/magento-address-autocomplete/blob/master/LICENSE.md
  * @version    1.0.0
  */
-$countriesAsAdmin2 = implode("','", $this->getCountriesAsAdmin2());
+/** @var Turiknox_AddressAutocomplete_Block_Js $this */
 ?>
 <?php if ($this->isEnabled()): ?>
     <script type="text/javascript">
@@ -17,7 +17,8 @@ $countriesAsAdmin2 = implode("','", $this->getCountriesAsAdmin2());
                 '<?php echo $this->escapeHtml($this->getBillingAddressField()); ?>',
                 '<?php echo $this->escapeHtml($this->getAutocompletePlaceholderText()); ?>',
                 'billing',
-                ['<?php echo $countriesAsAdmin2; ?>']
+                <?php echo $this->getCountriesAsAdmin2Json() ?>,
+                <?php echo $this->getAllowedCountriesJson() ?>
             );
             // If shipping is enabled, instantiate here
             <?php if ($this->isShippingAddressEnabled()): ?>
@@ -25,7 +26,8 @@ $countriesAsAdmin2 = implode("','", $this->getCountriesAsAdmin2());
                 '<?php echo $this->escapeHtml($this->getShippingAddressField()); ?>',
                 '<?php echo $this->escapeHtml($this->getAutocompletePlaceholderText()); ?>',
                 'shipping',
-                ['<?php echo $countriesAsAdmin2; ?>']
+                <?php echo $this->getCountriesAsAdmin2Json() ?>,
+                <?php echo $this->getAllowedCountriesJson() ?>
             );
             <?php endif; ?>
         });

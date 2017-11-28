@@ -16,6 +16,7 @@ Magento 1.8.x, 1.9.x
 - Ability to change the default 'Enter a location' placeholder text
 - Ability to choose the countries from a multiselect, whose 'region' should be configured using Google's 'administrative_area_level_2' component
 - Support for third party checkout extensions
+- Limits to allowed places only (defined in Magento)
 
 ## Installation
 

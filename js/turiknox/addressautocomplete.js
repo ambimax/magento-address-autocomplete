@@ -8,7 +8,7 @@
  * @version    1.0.0
  */
 var AddressAutocomplete = Class.create({
-    initialize: function (element, placeholder, type, countriesAsAdmin2) {
+    initialize: function (element, placeholder, type, countriesAsAdmin2, allowedCountries) {
         this.element = $(element);
         if (!(this.element)) {
             console.log('Autocomplete error: No autocomplete element found');
@@ -61,7 +61,10 @@ var AddressAutocomplete = Class.create({
             document.getElementById(this.element.id).placeholder = placeholder;
         }
 
-        this.autocomplete = new google.maps.places.Autocomplete((this.element), { types: ['geocode'] });
+        this.autocomplete = new google.maps.places.Autocomplete((this.element), {
+            types: ['geocode'],
+            componentRestrictions: {country: allowedCountries}
+        });
 
         google.maps.event.addListener(
             this.autocomplete, 'place_changed', this.fillAddressForm.bind(this)
@@ -78,7 +81,7 @@ var AddressAutocomplete = Class.create({
     /**
      * Fill address form
      */
-    fillAddressForm: function() {
+    fillAddressForm: function () {
 
         this.resetAddressFields();
         var address = this.getSelectedAddress();
@@ -105,7 +108,7 @@ var AddressAutocomplete = Class.create({
     /**
      * Reset address fields
      */
-    resetAddressFields: function() {
+    resetAddressFields: function () {
         for (var component in this.componentForm) {
             if (this.componentForm[component]) {
                 var element = this.componentForm[component].target;
@@ -120,7 +123,7 @@ var AddressAutocomplete = Class.create({
      * Get selected address
      * @returns {{}}
      */
-    getSelectedAddress: function() {
+    getSelectedAddress: function () {
         var address = {},
             place = this.autocomplete.getPlace(),
             components = place.address_components;
@@ -153,7 +156,7 @@ var AddressAutocomplete = Class.create({
      * @param address
      * @returns {*}
      */
-    formatStreet: function(address) {
+    formatStreet: function (address) {
         if (!address['street_number'] && address['route']) {
             address['street_number'] = address['route'];
             delete address['route'];
@@ -167,11 +170,11 @@ var AddressAutocomplete = Class.create({
      * @param address
      * @returns {*}
      */
-    getFormattedRegion: function(address) {
+    getFormattedRegion: function (address) {
         var country = address['country'].toUpperCase(),
 
-        // If region in administrative_area_level_2
-        useAdminArea2 = this.countriesRegionAsAdminArea2
+            // If region in administrative_area_level_2
+            useAdminArea2 = this.countriesRegionAsAdminArea2
                 .indexOf(country) >= 0;
 
         return useAdminArea2
@@ -184,7 +187,7 @@ var AddressAutocomplete = Class.create({
      * @param address
      * @param country
      */
-    updateRegion: function(address, country) {
+    updateRegion: function (address, country) {
         this.regionUpdater.update();
         var regionTarget = $(this.type + ':region'),
             regionIdTarget = $(this.type + ':region_id');
