@@ -18,14 +18,6 @@ var AddressAutocomplete = Class.create({
         this.regionUpdater = billingRegionUpdater;
         this.countriesRegionAsAdminArea2 = countriesAsAdmin2;
         this.componentForm = {
-            street_number: {
-                type: 'short_name',
-                target: this.type + ':street1'
-            },
-            route: {
-                type: 'long_name',
-                target: this.type + ':street2'
-            },
             locality: {
                 type: 'long_name',
                 target: this.type + ':city'
